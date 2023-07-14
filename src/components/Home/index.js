@@ -1,11 +1,16 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
-import {formatDistanceToNow} from 'date-fns'
 import {Link} from 'react-router-dom'
+import {formatDistanceToNow} from 'date-fns'
+import {HiFire} from 'react-icons/hi'
+import {AiFillHome} from 'react-icons/ai'
+import {SiYoutubegaming} from 'react-icons/si'
+import {MdPlaylistAdd} from 'react-icons/md'
 import {IoMdClose} from 'react-icons/io'
 import Loader from 'react-loader-spinner'
 import {BsSearch} from 'react-icons/bs'
 import Header from '../Header'
+import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
   HomeContainer,
@@ -14,6 +19,7 @@ import {
   BannerHeading,
   BannerButton,
   BannerWebsiteLogo,
+  BannerCloseButton,
   HomeContent,
   SearchContainer,
   SearchInput,
@@ -40,6 +46,20 @@ import {
   VideoFailureHeading,
   VideoFailureDescription,
   VideoFailureRetryButton,
+  LoaderContainer,
+  MainHomeContainer,
+  DesktopViewSliderBar,
+  SlideBarList,
+  SlideBarItem,
+  SlideBarItemContainer,
+  SlideBarTextContent,
+  SubHomeContentContainer,
+  DesktopViewSliderContainer,
+  DesktopViewSliderFooter,
+  SocialMediaLogos,
+  ContactUsHeading,
+  LogoImage,
+  DesktopViewFooterText,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -109,73 +129,105 @@ class Home extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="loader-container" data-testid="loader">
+    <LoaderContainer data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </div>
+    </LoaderContainer>
   )
 
   renderVideoFailureView = () => (
-    <VideoErrorViewContainer>
-      <VideoFailureImg
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure view"
-      />
-      <VideoFailureHeading h1 className="jobs-failure-heading">
-        Oops! Something Went Wrong
-      </VideoFailureHeading>
-      <VideoFailureDescription className="jobs-failure-description">
-        We are having some trouble to complete your request. Please try again.
-      </VideoFailureDescription>
-      <VideoFailureRetryButton type="button" onClick={this.retryVideoList}>
-        Retry
-      </VideoFailureRetryButton>
-    </VideoErrorViewContainer>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {darkTheme} = value
+
+        const videoFailureImgUrl = darkTheme
+          ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+          : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+
+        return (
+          <VideoErrorViewContainer>
+            <VideoFailureImg src={videoFailureImgUrl} alt="failure view" />
+            <VideoFailureHeading themeColor={darkTheme}>
+              Oops! Something Went Wrong
+            </VideoFailureHeading>
+            <VideoFailureDescription themeColor={darkTheme}>
+              We are having some trouble to complete your request. Please try
+              again.
+            </VideoFailureDescription>
+            <VideoFailureRetryButton
+              type="button"
+              onClick={this.retryVideoList}
+            >
+              Retry
+            </VideoFailureRetryButton>
+          </VideoErrorViewContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
-  renderVideoItem = () => {
-    const {videoList} = this.state
-    const shouldShowVideoList = videoList.length > 0
+  renderVideoItem = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {darkTheme} = value
 
-    return shouldShowVideoList ? (
-      <VideoContainer className="profile-container">
-        {videoList.map(video => (
-          <VideoItem>
-            <VideoThumbnail src={video.thumbnailUrl} alt={video.title} />
-            <VideoContent>
-              <ChannelLogo
-                src={video.channel.profile_image_url}
-                alt={video.channel.name}
-              />
-              <VideoTextContent>
-                <VideoTitle>{video.title}</VideoTitle>
-                <VideoDetailsContent>
-                  <ChannelName>{video.channel.name}</ChannelName>
-                  <VideoViewPublishedDetail>
-                    <VideoViewCount>{video.viewCount} views</VideoViewCount>
-                    <VideoPublished>
-                      {formatDistanceToNow(new Date(`${video.publishedAt}`))}
-                    </VideoPublished>
-                  </VideoViewPublishedDetail>
-                </VideoDetailsContent>
-              </VideoTextContent>
-            </VideoContent>
-          </VideoItem>
-        ))}
-      </VideoContainer>
-    ) : (
-      <NoVideoView>
-        <NoVideoImage
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-          alt="no videos"
-        />
-        <NoVideoHeading>No Search results found</NoVideoHeading>
-        <NoVideoDescription>
-          Try different key words or remove search filer
-        </NoVideoDescription>
-        <NoVideoRetryButton type="button">Retry</NoVideoRetryButton>
-      </NoVideoView>
-    )
-  }
+        const {videoList} = this.state
+        const shouldShowVideoList = videoList.length > 0
+
+        return shouldShowVideoList ? (
+          <VideoContainer>
+            {videoList.map(video => (
+              <Link to={`/videos/${video.id}`}>
+                <VideoItem key={video.id}>
+                  <VideoThumbnail
+                    src={video.thumbnailUrl}
+                    alt="video thumbnail"
+                  />
+                  <VideoContent>
+                    <ChannelLogo
+                      src={video.channel.profile_image_url}
+                      alt="channel logo"
+                    />
+                    <VideoTextContent>
+                      <VideoTitle>{video.title}</VideoTitle>
+                      <VideoDetailsContent>
+                        <ChannelName>{video.channel.name}</ChannelName>
+                        <VideoViewPublishedDetail>
+                          <VideoViewCount>
+                            {video.viewCount} views
+                          </VideoViewCount>
+                          <VideoPublished>
+                            {formatDistanceToNow(
+                              new Date(`${video.publishedAt}`),
+                            )}
+                          </VideoPublished>
+                        </VideoViewPublishedDetail>
+                      </VideoDetailsContent>
+                    </VideoTextContent>
+                  </VideoContent>
+                </VideoItem>
+              </Link>
+            ))}
+          </VideoContainer>
+        ) : (
+          <NoVideoView>
+            <NoVideoImage
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+              alt="no videos"
+            />
+            <NoVideoHeading themeColor={darkTheme}>
+              No Search results found
+            </NoVideoHeading>
+            <NoVideoDescription>
+              Try different key words or remove search filter
+            </NoVideoDescription>
+            <NoVideoRetryButton onClick={this.retryVideoList} type="button">
+              Retry
+            </NoVideoRetryButton>
+          </NoVideoView>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
 
   renderVideoList = () => {
     const {apiStatus} = this.state
@@ -210,48 +262,140 @@ class Home extends Component {
     this.setState({bannerVisible: false})
   }
 
+  renderMainHomeContainer = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {darkTheme} = value
+        const {bannerVisible, searchInput} = this.state
+
+        return (
+          <MainHomeContainer data-testid="home" themeColor={darkTheme}>
+            <DesktopViewSliderContainer themeColor={darkTheme}>
+              <DesktopViewSliderBar>
+                <SlideBarList>
+                  <SlideBarItem>
+                    <Link to="/">
+                      <SlideBarItemContainer>
+                        <AiFillHome />
+                        <SlideBarTextContent themeColor={darkTheme}>
+                          Home
+                        </SlideBarTextContent>
+                      </SlideBarItemContainer>
+                    </Link>
+                  </SlideBarItem>
+                  <SlideBarItem>
+                    <Link to="/trending">
+                      <SlideBarItemContainer>
+                        <HiFire />
+                        <SlideBarTextContent themeColor={darkTheme}>
+                          Trending
+                        </SlideBarTextContent>
+                      </SlideBarItemContainer>
+                    </Link>
+                  </SlideBarItem>
+                  <SlideBarItem>
+                    <Link to="/gaming">
+                      <SlideBarItemContainer>
+                        <SiYoutubegaming />
+                        <SlideBarTextContent themeColor={darkTheme}>
+                          Gaming
+                        </SlideBarTextContent>
+                      </SlideBarItemContainer>
+                    </Link>
+                  </SlideBarItem>
+                  <SlideBarItem>
+                    <Link to="/saved-videos">
+                      <SlideBarItemContainer>
+                        <MdPlaylistAdd />
+                        <SlideBarTextContent themeColor={darkTheme}>
+                          Saved videos
+                        </SlideBarTextContent>
+                      </SlideBarItemContainer>
+                    </Link>
+                  </SlideBarItem>
+                </SlideBarList>
+              </DesktopViewSliderBar>
+              <DesktopViewSliderFooter>
+                <ContactUsHeading themeColor={darkTheme}>
+                  CONTACT US
+                </ContactUsHeading>
+                <SocialMediaLogos>
+                  <LogoImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+                    alt="facebook logo"
+                  />
+                  <LogoImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+                    alt="twitter logo"
+                  />
+                  <LogoImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+                    alt="linked in logo"
+                  />
+                  <DesktopViewFooterText themeColor={darkTheme}>
+                    Enjoy! Now to see your channels and recommendations!
+                  </DesktopViewFooterText>
+                </SocialMediaLogos>
+              </DesktopViewSliderFooter>
+            </DesktopViewSliderContainer>
+            <SubHomeContentContainer>
+              <HomeContainer>
+                {bannerVisible ? (
+                  <BannerBackgroundContainer>
+                    <BannerContentContainer data-testid="banner">
+                      <BannerWebsiteLogo
+                        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                        alt="nxt watch logo"
+                      />
+                      <BannerHeading>
+                        Buy Nxt Watch Premium prepaid plans with UPI
+                      </BannerHeading>
+                      <BannerButton>GET IT NOW</BannerButton>
+                    </BannerContentContainer>
+                    <BannerCloseButton
+                      type="button"
+                      data-testid="close"
+                      onClick={this.closeBannerContainer}
+                    >
+                      <IoMdClose size="20" />
+                    </BannerCloseButton>
+                  </BannerBackgroundContainer>
+                ) : null}
+
+                <HomeContent>
+                  <SearchContainer themeColor={darkTheme}>
+                    <SearchInput
+                      type="search"
+                      value={searchInput}
+                      onChange={this.changeSearchInput}
+                      onKeyDown={this.onEnterSearchInput}
+                      placeholder="Search"
+                      themeColor={darkTheme}
+                    />
+                    <SearchButton
+                      type="button"
+                      onClick={this.searchUserInput}
+                      data-testid="searchButton"
+                      themeColor={darkTheme}
+                    >
+                      <BsSearch color={darkTheme ? '#424242' : 'black'} />
+                    </SearchButton>
+                  </SearchContainer>
+                </HomeContent>
+              </HomeContainer>
+              {this.renderVideoList()}
+            </SubHomeContentContainer>
+          </MainHomeContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
+
   render() {
-    const {bannerVisible, searchInput} = this.state
     return (
       <>
         <Header />
-        <HomeContainer>
-          {bannerVisible ? (
-            <BannerBackgroundContainer>
-              <BannerContentContainer>
-                <BannerWebsiteLogo
-                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-                  alt="website logo banner"
-                />
-                <BannerHeading>
-                  Buy Nxt Watch Premium prepaid plans with UPI
-                </BannerHeading>
-                <BannerButton>GET IT NOW</BannerButton>
-              </BannerContentContainer>
-              <IoMdClose size="20" onClick={this.closeBannerContainer} />
-            </BannerBackgroundContainer>
-          ) : null}
-
-          <HomeContent>
-            <SearchContainer>
-              <SearchInput
-                type="search"
-                value={searchInput}
-                onChange={this.changeSearchInput}
-                onKeyDown={this.onEnterSearchInput}
-                placeholder="Search"
-              />
-              <SearchButton
-                type="button"
-                onClick={this.searchUserInput}
-                data-testid="searchButton"
-              >
-                <BsSearch className="search-icon" />
-              </SearchButton>
-            </SearchContainer>
-          </HomeContent>
-        </HomeContainer>
-        {this.renderVideoList()}
+        {this.renderMainHomeContainer()}
       </>
     )
   }

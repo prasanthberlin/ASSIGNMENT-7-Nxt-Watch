@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
 export const HomeContainer = styled.div``
+
 export const BannerBackgroundContainer = styled.div`
   padding: 30px;
   font-family: roboto;
   display: flex;
   justify-content: space-between;
+  background-color: white;
   @media (min-width: 576px) {
     background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
     background-size: cover;
@@ -26,7 +28,7 @@ export const BannerWebsiteLogo = styled.img`
   }
 `
 
-export const BannerHeading = styled.h1`
+export const BannerHeading = styled.p`
   font-size: 18px;
   font-weight: 500;
   line-height: 2;
@@ -43,6 +45,13 @@ export const BannerButton = styled.button`
   cursor: pointer;
   outline: none;
 `
+export const BannerCloseButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  align-self: flex-start;
+`
 
 export const HomeContent = styled.div`
   padding: 10px 20px;
@@ -52,7 +61,8 @@ export const HomeContent = styled.div`
 `
 
 export const SearchContainer = styled.div`
-  border: 1px #ebebeb solid;
+  border: ${props =>
+    props.themeColor ? '1px #212121 solid' : '1px #d7dfe9 solid'};
   border-radius: 2px;
   display: flex;
   justify-content: space-between;
@@ -64,14 +74,15 @@ export const SearchInput = styled.input`
   border: none;
   padding: 10px;
   width: 100%;
-  color: #313131;
+  color: ${props => (props.themeColor ? '#ebebeb' : '#313131')};
 `
 
 export const SearchButton = styled.button`
   cursor: pointer;
   outline: none;
-  background-color: #f9f9f9;
-  border-left: 3px #ebebeb solid;
+  background-color: ${props => (props.themeColor ? '#231f20' : '#f9f9f9')};
+  border-left: ${props =>
+    props.themeColor ? '3px #212121 solid' : '3px #d7dfe9 solid'};
   border-right: none;
   border-top: none;
   border-bottom: none;
@@ -121,7 +132,7 @@ export const VideoTextContent = styled.div`
   max-width: 400px;
 `
 
-export const VideoTitle = styled.h1`
+export const VideoTitle = styled.p`
   font-size: 20px;
   font-weight: 400;
   line-height: 1.5;
@@ -157,7 +168,7 @@ export const VideoViewPublishedDetail = styled.ul`
   }
 `
 
-export const VideoViewCount = styled.li`
+export const VideoViewCount = styled.p`
   margin-right: 40px;
   list-style-type: disc;
   @media (min-width: 576px) {
@@ -165,7 +176,7 @@ export const VideoViewCount = styled.li`
     list-style-type: none;
   }
 `
-export const VideoPublished = styled.li`
+export const VideoPublished = styled.p`
   list-style-type: disc;
 `
 export const NoVideoView = styled.div`
@@ -175,6 +186,7 @@ export const NoVideoView = styled.div`
   font-family: roboto;
   text-align: center;
   margin-top: 50px;
+  min-height: 70vh;
   @media (min-width: 768px) {
     margin-top: 70px;
     padding-left: 100px;
@@ -183,18 +195,20 @@ export const NoVideoView = styled.div`
 export const NoVideoImage = styled.img`
   width: 220px;
   @media (min-width: 768px) {
-    width: 500px;
+    width: 300px;
   }
 `
 
 export const NoVideoHeading = styled.h1`
   margin-top: 40px;
   margin-bottom: 10px;
+  font-family: roboto;
   font-size: 20px;
-  color: #1e293b;
+  color: ${props => (props.themeColor ? '#f9f9f9' : '#1e293b')};
   font-weight: 500;
   @media (min-width: 768px) {
-    font-size: 38px;
+    font-size: 22px;
+    font-weight: 600;
   }
 `
 export const NoVideoDescription = styled.p`
@@ -230,24 +244,25 @@ export const VideoErrorViewContainer = styled.div`
   align-items: center;
   text-align: center;
   @media (min-width: 768px) {
-    margin-top: 70px;
+    margin-top: 20px;
     padding-left: 100px;
   }
 `
 export const VideoFailureImg = styled.img`
   width: 200px;
   @media (min-width: 768px) {
-    width: 500px;
+    width: 300px;
   }
 `
 export const VideoFailureHeading = styled.h1`
-  margin-top: 40px;
   margin-bottom: 0;
   font-size: 20px;
-  color: #1e293b;
+  color: ${props => (props.themeColor ? 'white' : '#1e293b')};
   font-weight: 500;
   @media (min-width: 768px) {
-    font-size: 38px;
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 600;
   }
 `
 
@@ -255,12 +270,13 @@ export const VideoFailureDescription = styled.p`
   max-width: 350px;
   font-size: 18px;
   line-height: 1.5;
-  color: #475569;
+  color: ${props => (props.themeColor ? '#7e858e' : '#475569')};
   margin-top: 5px;
   @media (min-width: 768px) {
     max-width: 100%;
-    font-size: 13px;
+    font-size: 16px;
     margin-top: 15px;
+    max-width: 400px;
   }
 `
 
@@ -274,4 +290,80 @@ export const VideoFailureRetryButton = styled.button`
   border: none;
   padding: 10px 30px;
   border-radius: 5px;
+`
+export const LoaderContainer = styled.div`
+  text-align: center;
+`
+
+export const MainHomeContainer = styled.div`
+  display: flex;
+  background-color: ${props => (props.themeColor ? '#181818' : '#f9f9f9')};
+`
+
+export const DesktopViewSliderBar = styled.div`
+    display: flex;
+    min-width: 250px;
+    padding: 20px;
+  }
+`
+
+export const SlideBarList = styled.ul`
+  padding-left: 0;
+  list-style: none;
+  font-size: 19px;
+`
+export const SlideBarItem = styled.li``
+
+export const SlideBarItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  color: black;
+`
+
+export const SlideBarTextContent = styled.p`
+  font-weight: 500;
+  margin-left: 15px;
+  font-family: roboto;
+  color: ${props => (props.themeColor ? 'white' : 'black')};
+`
+export const SubHomeContentContainer = styled.div`
+  flex-grow: 1;
+`
+
+export const DesktopViewSliderContainer = styled.div`
+  display: none;
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 92vh;
+    background-color: ${props => (props.themeColor ? '#181818' : '#f1f5f9')};
+  }
+`
+
+export const DesktopViewSliderFooter = styled.div`
+  padding: 10px;
+  max-width: 200px;
+`
+
+export const ContactUsHeading = styled.p`
+  font-family: roboto;
+  font-size: 15px;
+  color: ${props => (props.themeColor ? 'white' : 'black')};
+`
+
+export const SocialMediaLogos = styled.div``
+
+export const LogoImage = styled.img`
+  width: 30px;
+  margin-right: 10px;
+  cursor: pointer;
+`
+
+export const DesktopViewFooterText = styled.p`
+  font-family: roboto;
+  font-size: 15px;
+  color: ${props => (props.themeColor ? 'white' : '#1e293b')};
+  font-weight: 500;
+  line-height: 1.5;
 `

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const LoginFormContainer = styled.div`
-  background-color: white;
+  background-color: ${props => (props.themeColor ? '#181818' : '#f9f9f9')};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,8 +16,7 @@ export const LoginFormContainer = styled.div`
 `
 
 export const FromContainer = styled.form`
-  background-color: white;
-  box-shadow: 4px 8px 12px 16px #f9f9f9;
+  background-color: ${props => (props.themeColor ? '#000000' : '#ffffff')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,7 +44,7 @@ export const LoginButton = styled.button`
   font-family: 'Roboto';
   font-weight: 500;
   font-size: 14px;
-  color: #f8fafc;
+  color: #ffffff;
   height: 40px;
   width: 100%;
   margin-top: 20px;
@@ -63,7 +62,7 @@ export const InputLabel = styled.label`
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;
-  color: #475569;
+  color: ${props => (props.themeColor ? '#f9f9f9' : '#475569')};
 `
 
 export const UsernameInputField = styled.input`
@@ -111,7 +110,7 @@ export const CheckBox = styled.input`
 `
 export const ShowPassword = styled.label`
   font-family: roboto;
-  color: #181818;
+  color: ${props => (props.themeColor ? '#f9f9f9' : '#181818')};
   font-weight: 500;
   font-size: 15px;
 `

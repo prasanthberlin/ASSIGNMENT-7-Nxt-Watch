@@ -1,6 +1,7 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
+import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
   LoginFormContainer,
@@ -69,75 +70,104 @@ class Login extends Component {
     this.setState(prevState => ({showPassword: !prevState.showPassword}))
   }
 
-  renderPasswordField = () => {
-    const {password, showPassword} = this.state
+  renderPasswordField = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {darkTheme} = value
 
-    const passwordType = showPassword ? 'password' : 'text'
+        const {password, showPassword} = this.state
 
-    return (
-      <>
-        <InputLabel htmlFor="password">PASSWORD</InputLabel>
-        <PasswordInputField
-          type={passwordType}
-          id="password"
-          value={password}
-          onChange={this.onChangePassword}
-          placeholder="Password"
-        />
-      </>
-    )
-  }
+        const passwordType = showPassword ? 'password' : 'text'
 
-  renderUsernameField = () => {
-    const {username} = this.state
+        return (
+          <>
+            <InputLabel themeColor={darkTheme} htmlFor="password">
+              PASSWORD
+            </InputLabel>
+            <PasswordInputField
+              type={passwordType}
+              id="password"
+              value={password}
+              onChange={this.onChangePassword}
+              placeholder="Password"
+            />
+          </>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
 
-    return (
-      <>
-        <InputLabel htmlFor="username">USERNAME</InputLabel>
-        <UsernameInputField
-          type="text"
-          id="username"
-          value={username}
-          onChange={this.onChangeUsername}
-          placeholder="Username"
-        />
-      </>
-    )
-  }
+  renderUsernameField = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {darkTheme} = value
+
+        const {username} = this.state
+
+        return (
+          <>
+            <InputLabel themeColor={darkTheme} htmlFor="username">
+              USERNAME
+            </InputLabel>
+            <UsernameInputField
+              type="text"
+              id="username"
+              value={username}
+              onChange={this.onChangeUsername}
+              placeholder="Username"
+            />
+          </>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
+
+  renderLoginFormContainer = () => (
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {darkTheme} = value
+        const {showSubmitError, errorMsg} = this.state
+
+        const websiteLogoUrl = darkTheme
+          ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
+          : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
+
+        return (
+          <LoginFormContainer themeColor={darkTheme}>
+            <FromContainer themeColor={darkTheme} onSubmit={this.submitForm}>
+              <WebsiteLogo src={websiteLogoUrl} alt="website logo" />
+
+              <InputContainer>{this.renderUsernameField()}</InputContainer>
+              <InputContainer>{this.renderPasswordField()}</InputContainer>
+              <ShowPasswordContainer>
+                <CheckBox
+                  onClick={this.togglePassword}
+                  type="checkbox"
+                  id="showPasswordId"
+                />
+                <ShowPassword themeColor={darkTheme} htmlFor="showPasswordId">
+                  Show Password
+                </ShowPassword>
+              </ShowPasswordContainer>
+              <LoginButton type="submit" className="login-button">
+                Login
+              </LoginButton>
+              {showSubmitError && <ErrorMessage>*{errorMsg}</ErrorMessage>}
+            </FromContainer>
+          </LoginFormContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
+  )
 
   render() {
-    const {showSubmitError, errorMsg} = this.state
     const jwtToken = Cookies.get('jwt_token')
 
     if (jwtToken !== undefined) {
       return <Redirect to="/" />
     }
 
-    return (
-      <LoginFormContainer>
-        <FromContainer onSubmit={this.submitForm}>
-          <WebsiteLogo
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-            alt="website logo"
-          />
-
-          <InputContainer>{this.renderUsernameField()}</InputContainer>
-          <InputContainer>{this.renderPasswordField()}</InputContainer>
-          <ShowPasswordContainer>
-            <CheckBox
-              onClick={this.togglePassword}
-              type="checkbox"
-              id="showPasswordId"
-            />
-            <ShowPassword htmlFor="showPasswordId">Show Password</ShowPassword>
-          </ShowPasswordContainer>
-          <LoginButton type="submit" className="login-button">
-            Login
-          </LoginButton>
-          {showSubmitError && <ErrorMessage>*{errorMsg}</ErrorMessage>}
-        </FromContainer>
-      </LoginFormContainer>
-    )
+    return this.renderLoginFormContainer()
   }
 }
 

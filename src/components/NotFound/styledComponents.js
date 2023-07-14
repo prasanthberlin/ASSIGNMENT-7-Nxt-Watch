@@ -6,14 +6,14 @@ export const NotFoundContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f9f9f9;
+  background-color: ${props => (props.themeColor ? '#383838' : '#f9f9f9')};
 `
 
 export const NotFoundImg = styled.img`
   width: 400px;
 `
 export const NotFoundHeading = styled.h1`
-  color: #0f0f0f;
+  color: ${props => (props.themeColor ? '#f9f9f9' : '#0f0f0f')};
   font-family: roboto;
   font-size: 20px;
   font-weight: 600;
@@ -25,7 +25,7 @@ export const NotFoundHeading = styled.h1`
   }
 `
 export const NotFoundDescription = styled.p`
-  color: #1e293b;
+  color: ${props => (props.themeColor ? '#d7dfe9' : '#1e293b')};
   margin-top: 0;
   font-family: roboto;
   font-size: 15px;

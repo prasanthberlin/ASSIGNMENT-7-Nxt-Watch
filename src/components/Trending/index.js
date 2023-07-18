@@ -2,7 +2,6 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {formatDistanceToNow} from 'date-fns'
 import Loader from 'react-loader-spinner'
-import {Link} from 'react-router-dom'
 import {HiFire} from 'react-icons/hi'
 import {AiFillHome} from 'react-icons/ai'
 import {SiYoutubegaming} from 'react-icons/si'
@@ -12,12 +11,14 @@ import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
   TrendingContainer,
+  LoaderContainer,
   TrendingHeaderContainer,
   TrendingLogoContainer,
   TrendingText,
   TrendingBodyContainer,
   VideoContainer,
   VideoItem,
+  TrendingLinkElement,
   VideoThumbnail,
   VideoContent,
   ChannelLogo,
@@ -35,8 +36,9 @@ import {
   VideoFailureRetryButton,
   DesktopViewSliderBar,
   SlideBarList,
+  SlideBarMenuLinkItem,
   SlideBarItem,
-  SlideBarItemContainer,
+  SlideBarMenuIcon,
   SlideBarTextContent,
   DesktopViewSliderContainer,
   DesktopViewSliderFooter,
@@ -52,6 +54,13 @@ const apiStatusConstants = {
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
 }
+
+const menuListItems = [
+  {id: 1, link: '/', icon: <AiFillHome />, text: 'Home'},
+  {id: 2, link: '/trending', icon: <HiFire />, text: 'Trending'},
+  {id: 3, link: '/gaming', icon: <SiYoutubegaming />, text: 'Gaming'},
+  {id: 4, link: '/saved-videos', icon: <MdPlaylistAdd />, text: 'Saved videos'},
+]
 
 class Trending extends Component {
   state = {
@@ -104,14 +113,14 @@ class Trending extends Component {
     }
   }
 
-  retryVideoList = () => {
+  trendingVideoListRetryButton = () => {
     this.getTrendingVideoList()
   }
 
   renderLoadingView = () => (
-    <div className="loader-container" data-testid="loader">
+    <LoaderContainer data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </div>
+    </LoaderContainer>
   )
 
   renderVideoFailureView = () => (
@@ -135,7 +144,7 @@ class Trending extends Component {
             </VideoFailureDescription>
             <VideoFailureRetryButton
               type="button"
-              onClick={this.retryVideoList}
+              onClick={this.trendingVideoListRetryButton}
             >
               Retry
             </VideoFailureRetryButton>
@@ -162,7 +171,7 @@ class Trending extends Component {
             </TrendingHeaderContainer>
             <VideoContainer themeColor={darkTheme}>
               {trendingVideoList.map(video => (
-                <Link to={`/videos/${video.id}`}>
+                <TrendingLinkElement to={`/videos/${video.id}`}>
                   <VideoItem themeColor={darkTheme} key={video.id}>
                     <VideoThumbnail
                       src={video.thumbnailUrl}
@@ -174,7 +183,9 @@ class Trending extends Component {
                         alt={video.channel.name}
                       />
                       <VideoTextContent>
-                        <VideoTitle>{video.title}</VideoTitle>
+                        <VideoTitle themeColor={darkTheme}>
+                          {video.title}
+                        </VideoTitle>
                         <VideoDetailsContent>
                           <ChannelName>{video.channel.name}</ChannelName>
                           <VideoViewPublishedDetail>
@@ -191,7 +202,7 @@ class Trending extends Component {
                       </VideoTextContent>
                     </VideoContent>
                   </VideoItem>
-                </Link>
+                </TrendingLinkElement>
               ))}
             </VideoContainer>
           </>
@@ -218,53 +229,36 @@ class Trending extends Component {
   renderTrendingContainer = () => (
     <NxtWatchContext.Consumer>
       {value => {
-        const {darkTheme} = value
+        const {darkTheme, activeMenuId, activeMenu} = value
+
+        const sliderBarMenuItems = menu => {
+          const changeActiveMenuId = () => {
+            activeMenu(menu.id)
+          }
+
+          return (
+            <SlideBarMenuLinkItem to={menu.link}>
+              <SlideBarItem key={menu.id} onClick={changeActiveMenuId}>
+                <SlideBarMenuIcon activeMenu={menu.id === activeMenuId}>
+                  {menu.icon}
+                </SlideBarMenuIcon>
+                <SlideBarTextContent
+                  activeMenu={menu.id === activeMenuId}
+                  themeColor={darkTheme}
+                >
+                  {menu.text}
+                </SlideBarTextContent>
+              </SlideBarItem>
+            </SlideBarMenuLinkItem>
+          )
+        }
 
         return (
           <TrendingContainer data-testid="trending" themeColor={darkTheme}>
             <DesktopViewSliderContainer themeColor={darkTheme}>
               <DesktopViewSliderBar>
                 <SlideBarList>
-                  <SlideBarItem>
-                    <Link to="/">
-                      <SlideBarItemContainer>
-                        <AiFillHome />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Home
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
-                  <SlideBarItem>
-                    <Link to="/trending">
-                      <SlideBarItemContainer>
-                        <HiFire />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Trending
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
-                  <SlideBarItem>
-                    <Link to="/gaming">
-                      <SlideBarItemContainer>
-                        <SiYoutubegaming />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Gaming
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
-                  <SlideBarItem>
-                    <Link to="/saved-videos">
-                      <SlideBarItemContainer>
-                        <MdPlaylistAdd />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Saved videos
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
+                  {menuListItems.map(menu => sliderBarMenuItems(menu))}
                 </SlideBarList>
               </DesktopViewSliderBar>
               <DesktopViewSliderFooter>

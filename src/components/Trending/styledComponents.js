@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 export const TrendingContainer = styled.div`
   background-color: ${props => (props.themeColor ? '#0f0f0f' : '#d7dfe9')};
@@ -32,6 +33,9 @@ export const TrendingText = styled.h1`
 export const TrendingBodyContainer = styled.div`
   background-color:  background-color: ${props =>
     props.themeColor ? '#0f0f0f' : '#f4f4f4'};
+     flex-grow: 1;
+  overflow-y: auto;
+  max-height: 90vh;
 `
 
 export const VideoContainer = styled.ul`
@@ -52,6 +56,9 @@ export const VideoItem = styled.li`
     display: flex;
     align-items: flex-start;
   }
+`
+export const TrendingLinkElement = styled(Link)`
+  text-decoration: none;
 `
 
 export const VideoThumbnail = styled.img`
@@ -89,6 +96,7 @@ export const VideoTitle = styled.p`
   font-size: 20px;
   font-weight: 400;
   line-height: 1.5;
+  color: ${props => (props.themeColor ? '#ffffff' : '#313131')};
   @media (min-width: 576px) {
     font-size: 15px;
     font-weight: 500;
@@ -205,19 +213,33 @@ export const SlideBarList = styled.ul`
   list-style: none;
   font-size: 19px;
 `
-export const SlideBarItem = styled.li``
-
-export const SlideBarItemContainer = styled.div`
+export const SlideBarItem = styled.li`
   display: flex;
   align-items: center;
   color: black;
+`
+
+export const SlideBarMenuLinkItem = styled(Link)`
+  text-decoration: none;
+`
+
+export const SlideBarMenuIcon = styled.div`
+  color: ${props => (props.activeMenu ? '#ff0000' : '#475569')};
 `
 
 export const SlideBarTextContent = styled.p`
   font-weight: 500;
   margin-left: 15px;
   font-family: roboto;
-  color: ${props => (props.themeColor ? 'white' : 'black')};
+  color: ${props => (props.themeColor ? ' #f1f5f9' : '#383838')};
+  font-weight: ${props => (props.activeMenu ? 'bold' : 'normal')};
+`
+
+export const LoaderContainer = styled.div`
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const DesktopViewSliderContainer = styled.div`
@@ -226,7 +248,7 @@ export const DesktopViewSliderContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 92vh;
+    height: 90vh;
     background-color: ${props => (props.themeColor ? '#181818' : '#f1f5f9')};
   }
 `

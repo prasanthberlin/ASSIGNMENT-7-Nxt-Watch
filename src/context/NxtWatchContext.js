@@ -3,9 +3,10 @@ import React from 'react'
 const NxtWatchContext = React.createContext({
   savedVideoList: [],
   darkTheme: false,
-  addSavedVideo: () => {},
-  removeSavedVideo: () => {},
+  activeMenuId: 1,
+  addAndRemoveVideo: () => {},
   toggleTheme: () => {},
+  activeMenu: () => {},
 })
 
 export default NxtWatchContext

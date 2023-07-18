@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 export const GamingContainer = styled.div`
   background-color: ${props => (props.themeColor ? '#0f0f0f' : '#d7dfe9')};
@@ -31,12 +32,15 @@ export const GamingText = styled.h1`
 export const GamingBodyContainer = styled.div`
   background-color:  background-color: ${props =>
     props.themeColor ? '#0f0f0f' : '#f4f4f4'};
+     flex-grow: 1;
+  overflow-y: auto;
+  max-height: 90vh;
 `
 
 export const VideoContainer = styled.ul`
   list-style-type: none;
-    background-color:  background-color: ${props =>
-      props.themeColor ? '#0f0f0f' : '#f4f4f4'};
+background-color:  background-color: ${props =>
+  props.themeColor ? '#0f0f0f' : '#f4f4f4'};
   padding-left: 0;
   display: flex;
   flex-wrap: wrap;
@@ -53,6 +57,10 @@ background-color:  background-color: ${props =>
     align-items: flex-start;
   }
 `
+export const GamingLinkElement = styled(Link)`
+  text-decoration: none;
+`
+
 export const VideoItemContainer = styled.div`
   font-family: roboto;
   margin-right: 16px;
@@ -66,7 +74,7 @@ export const GamingVideoHeading = styled.p`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 5px;
-  color: #00306e;
+  color: ${props => (props.themeColor ? '#ebebeb' : '#313131')};
 `
 
 export const GamingVideoWatchingCount = styled.p`
@@ -150,19 +158,33 @@ export const SlideBarList = styled.ul`
   list-style: none;
   font-size: 19px;
 `
-export const SlideBarItem = styled.li``
-
-export const SlideBarItemContainer = styled.div`
+export const SlideBarItem = styled.li`
   display: flex;
   align-items: center;
   color: black;
+`
+
+export const SlideBarMenuLinkItem = styled(Link)`
+  text-decoration: none;
+`
+
+export const SlideBarMenuIcon = styled.div`
+  color: ${props => (props.activeMenu ? '#ff0000' : '#475569')};
 `
 
 export const SlideBarTextContent = styled.p`
   font-weight: 500;
   margin-left: 15px;
   font-family: roboto;
-  color: ${props => (props.themeColor ? 'white' : 'black')};
+  color: ${props => (props.themeColor ? ' #f1f5f9' : '#383838')};
+  font-weight: ${props => (props.activeMenu ? 'bold' : 'normal')};
+`
+
+export const LoaderContainer = styled.div`
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const DesktopViewSliderContainer = styled.ul`
@@ -174,7 +196,7 @@ export const DesktopViewSliderContainer = styled.ul`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 92vh;
+    height: 90vh;
     background-color: ${props => (props.themeColor ? '#181818' : '#f1f5f9')};
   }
 `

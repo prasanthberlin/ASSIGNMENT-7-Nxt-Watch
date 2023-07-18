@@ -1,6 +1,12 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 export const HomeContainer = styled.div``
+
+export const HomeLinkElement = styled(Link)`
+  text-decoration: none;
+  color: black;
+`
 
 export const BannerBackgroundContainer = styled.div`
   padding: 30px;
@@ -100,6 +106,8 @@ export const VideoContainer = styled.ul`
     display: flex;
     padding: 15px;
     flex-wrap: wrap;
+    overflow-y: auto;
+    flex-grow: 1;
   }
 `
 
@@ -136,6 +144,7 @@ export const VideoTitle = styled.p`
   font-size: 20px;
   font-weight: 400;
   line-height: 1.5;
+  color: ${props => (props.themeColor ? 'white' : 'black')};
   @media (min-width: 576px) {
     font-size: 15px;
   }
@@ -153,12 +162,14 @@ export const VideoDetailsContent = styled.div`
 
 export const ChannelName = styled.p`
   font-size: 15px;
+  color: ${props => (props.themeColor ? '#909090' : '#64748b')};
   @media (min-width: 576px) {
     margin-top: 0;
   }
 `
 
 export const VideoViewPublishedDetail = styled.ul`
+  color: ${props => (props.themeColor ? '#909090' : '#64748b')};
   display: flex;
   justify-content: space-evenly;
   @media (min-width: 576px) {
@@ -292,7 +303,10 @@ export const VideoFailureRetryButton = styled.button`
   border-radius: 5px;
 `
 export const LoaderContainer = styled.div`
-  text-align: center;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const MainHomeContainer = styled.div`
@@ -312,31 +326,40 @@ export const SlideBarList = styled.ul`
   list-style: none;
   font-size: 19px;
 `
-export const SlideBarItem = styled.li``
-
-export const SlideBarItemContainer = styled.div`
+export const SlideBarItem = styled.li`
   display: flex;
   align-items: center;
   color: black;
+`
+export const SlideBarMenuLinkItem = styled(Link)`
+  text-decoration: none;
+`
+
+export const SlideBarMenuIcon = styled.div`
+  color: ${props => (props.activeMenu ? '#ff0000' : '#475569')};
 `
 
 export const SlideBarTextContent = styled.p`
   font-weight: 500;
   margin-left: 15px;
   font-family: roboto;
-  color: ${props => (props.themeColor ? 'white' : 'black')};
+  color: ${props => (props.themeColor ? ' #f1f5f9' : '#383838')};
+  font-weight: ${props => (props.activeMenu ? 'bold' : 'normal')};
 `
 export const SubHomeContentContainer = styled.div`
   flex-grow: 1;
+  overflow-y: auto;
+  max-height: 90vh;
 `
 
 export const DesktopViewSliderContainer = styled.div`
   display: none;
   @media (min-width: 768px) {
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 92vh;
+    height: 90vh;
     background-color: ${props => (props.themeColor ? '#181818' : '#f1f5f9')};
   }
 `

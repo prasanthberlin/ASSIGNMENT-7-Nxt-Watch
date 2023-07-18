@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 export const NavHeader = styled.nav`
   background-color: ${props => (props.themeColor ? '#0f0f0f' : '#f1f1f1')};
@@ -7,6 +8,11 @@ export const NavHeader = styled.nav`
     padding: 25px 60px 25px 60px;
   }
 `
+export const MenuListLinkItem = styled(Link)`
+  text-decoration: none;
+  color: grey;
+`
+
 export const NavBarMobileLogoContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -50,7 +56,7 @@ export const NavBarLargeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 90vw;
+  width: 94vw;
   margin-left: -30px;
   margin-top: -20px;
   margin-bottom: -20px;
@@ -92,19 +98,21 @@ export const TriggerList = styled.ul`
   list-style: none;
   font-size: 19px;
 `
-export const TriggerItem = styled.li``
-
-export const TriggerItemContainer = styled.div`
+export const TriggerItem = styled.li`
   display: flex;
   align-items: center;
-  color: black;
+`
+
+export const MenuIcon = styled.div`
+  color: ${props => (props.activeMenu ? '#ff0000' : '#475569')};
 `
 
 export const TriggerTextContent = styled.p`
   font-weight: 500;
   margin-left: 15px;
   font-family: roboto;
-  color: ${props => (props.themeColor ? 'white' : 'black')};
+  color: ${props => (props.themeColor ? 'white' : '#475569')};
+  font-weight: ${props => (props.activeMenu ? 'bold' : 'normal')};
 `
 export const LogoutPopupContainer = styled.div`
   min-width: 100vw;

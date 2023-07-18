@@ -3,7 +3,6 @@ import Cookies from 'js-cookie'
 import {formatDistanceToNow} from 'date-fns'
 import ReactPlayer from 'react-player'
 import Loader from 'react-loader-spinner'
-import {Link} from 'react-router-dom'
 import {AiFillHome} from 'react-icons/ai'
 import {BiLike, BiDislike} from 'react-icons/bi'
 import {HiFire} from 'react-icons/hi'
@@ -14,6 +13,7 @@ import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
   VideoItemDetailsContainer,
+  LoaderContainer,
   VideoItemDetailsBodyContainer,
   VideoContainer,
   VideoDescriptionDetails,
@@ -24,7 +24,9 @@ import {
   VideoPublished,
   VideoLikeDislikeSaveContainer,
   VideoLDSItem,
-  VideoLDSButton,
+  VideoLikeButton,
+  VideoDislikeButton,
+  VideoSaveButton,
   VideoLDSText,
   HorizontalLine,
   ChannelHeadingDetails,
@@ -41,7 +43,8 @@ import {
   DesktopViewSliderBar,
   SlideBarList,
   SlideBarItem,
-  SlideBarItemContainer,
+  SlideBarMenuLinkItem,
+  SlideBarMenuIcon,
   SlideBarTextContent,
   DesktopViewSliderContainer,
   DesktopViewSliderFooter,
@@ -58,13 +61,19 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
+const menuListItems = [
+  {id: 1, link: '/', icon: <AiFillHome />, text: 'Home'},
+  {id: 2, link: '/trending', icon: <HiFire />, text: 'Trending'},
+  {id: 3, link: '/gaming', icon: <SiYoutubegaming />, text: 'Gaming'},
+  {id: 4, link: '/saved-videos', icon: <MdPlaylistAdd />, text: 'Saved videos'},
+]
+
 class VideoItemDetails extends Component {
   state = {
     videoDetails: {},
     apiStatus: apiStatusConstants.initial,
     likedVideo: false,
     dislikedVideo: false,
-    savedVideo: false,
   }
 
   componentDidMount() {
@@ -118,14 +127,14 @@ class VideoItemDetails extends Component {
     }
   }
 
-  retryVideoList = () => {
+  videoDetailsRetryButton = () => {
     this.getVideoItemDetails()
   }
 
   renderLoadingView = () => (
-    <div className="loader-container" data-testid="loader">
+    <LoaderContainer data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </div>
+    </LoaderContainer>
   )
 
   renderVideoFailureView = () => (
@@ -149,7 +158,7 @@ class VideoItemDetails extends Component {
             </VideoFailureDescription>
             <VideoFailureRetryButton
               type="button"
-              onClick={this.retryVideoList}
+              onClick={this.videoDetailsRetryButton}
             >
               Retry
             </VideoFailureRetryButton>
@@ -173,24 +182,28 @@ class VideoItemDetails extends Component {
     }))
   }
 
-  savedVideo = () => {
-    this.setState(prevState => ({
-      savedVideo: !prevState.savedVideo,
-    }))
-  }
-
   renderVideoItem = () => (
     <NxtWatchContext.Consumer>
       {value => {
-        const {darkTheme, addSavedVideo, removeSavedVideo} = value
+        const {darkTheme, addAndRemoveVideo, savedVideoList} = value
 
-        const {videoDetails, likedVideo, dislikedVideo, savedVideo} = this.state
+        const {videoDetails, likedVideo, dislikedVideo} = this.state
 
-        const saveText = savedVideo ? 'Saved' : 'Save'
+        const isVideoSaved = savedVideoList.find(
+          video => video.id === videoDetails.id,
+        )
+
+        const saveTextColor = isVideoSaved === undefined
+
+        const saveText = isVideoSaved === undefined ? 'Save' : 'Saved'
+
+        const addAndRemoveVideoButton = () => {
+          addAndRemoveVideo(videoDetails)
+        }
 
         return (
           <VideoContainer>
-            <ReactPlayer url={videoDetails.videoUrl} controls />
+            <ReactPlayer url={videoDetails.videoUrl} controls width="100%" />
             <VideoDescriptionDetails>
               <VideoTitle themeColor={darkTheme}>
                 {videoDetails.title}
@@ -208,34 +221,34 @@ class VideoItemDetails extends Component {
                 </VideoDetailsContent>
                 <VideoLikeDislikeSaveContainer>
                   <VideoLDSItem>
-                    <VideoLDSButton
+                    <VideoLikeButton
                       type="button"
                       toggleColor={likedVideo}
                       onClick={this.likedVideo}
                     >
                       <BiLike size="20" />
                       <VideoLDSText>Like</VideoLDSText>
-                    </VideoLDSButton>
+                    </VideoLikeButton>
                   </VideoLDSItem>
                   <VideoLDSItem>
-                    <VideoLDSButton
+                    <VideoDislikeButton
                       type="button"
                       toggleColor={dislikedVideo}
                       onClick={this.dislikedVideo}
                     >
                       <BiDislike size="20" />
                       <VideoLDSText>Dislike</VideoLDSText>
-                    </VideoLDSButton>
+                    </VideoDislikeButton>
                   </VideoLDSItem>
                   <VideoLDSItem>
-                    <VideoLDSButton
+                    <VideoSaveButton
                       type="button"
-                      toggleColor={savedVideo}
-                      onClick={this.savedVideo}
+                      toggleColor={saveTextColor}
+                      onClick={addAndRemoveVideoButton}
                     >
                       <MdPlaylistAdd size="20" />
                       <VideoLDSText>{saveText}</VideoLDSText>
-                    </VideoLDSButton>
+                    </VideoSaveButton>
                   </VideoLDSItem>
                 </VideoLikeDislikeSaveContainer>
               </VideoDescriptionDetailsContainer>
@@ -282,7 +295,30 @@ class VideoItemDetails extends Component {
   renderVideoItemDetailsContainer = () => (
     <NxtWatchContext.Consumer>
       {value => {
-        const {darkTheme} = value
+        const {darkTheme, activeMenu, activeMenuId} = value
+
+        const sliderBarMenuItems = menu => {
+          const changeActiveMenuId = () => {
+            activeMenu(menu.id)
+          }
+
+          return (
+            <SlideBarMenuLinkItem to={menu.link}>
+              <SlideBarItem key={menu.id} onClick={changeActiveMenuId}>
+                <SlideBarMenuIcon activeMenu={menu.id === activeMenuId}>
+                  {menu.icon}
+                </SlideBarMenuIcon>
+                <SlideBarTextContent
+                  activeMenu={menu.id === activeMenuId}
+                  themeColor={darkTheme}
+                >
+                  {menu.text}
+                </SlideBarTextContent>
+              </SlideBarItem>
+            </SlideBarMenuLinkItem>
+          )
+        }
+
         return (
           <VideoItemDetailsContainer
             data-testid="videoItemDetails"
@@ -291,46 +327,7 @@ class VideoItemDetails extends Component {
             <DesktopViewSliderContainer themeColor={darkTheme}>
               <DesktopViewSliderBar>
                 <SlideBarList>
-                  <SlideBarItem>
-                    <Link to="/">
-                      <SlideBarItemContainer>
-                        <AiFillHome />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Home
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
-                  <SlideBarItem>
-                    <Link to="/trending">
-                      <SlideBarItemContainer>
-                        <HiFire />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Trending
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
-                  <SlideBarItem>
-                    <Link to="/gaming">
-                      <SlideBarItemContainer>
-                        <SiYoutubegaming />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Gaming
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
-                  <SlideBarItem>
-                    <Link to="/saved-videos">
-                      <SlideBarItemContainer>
-                        <MdPlaylistAdd />
-                        <SlideBarTextContent themeColor={darkTheme}>
-                          Saved videos
-                        </SlideBarTextContent>
-                      </SlideBarItemContainer>
-                    </Link>
-                  </SlideBarItem>
+                  {menuListItems.map(menu => sliderBarMenuItems(menu))}
                 </SlideBarList>
               </DesktopViewSliderBar>
               <DesktopViewSliderFooter>

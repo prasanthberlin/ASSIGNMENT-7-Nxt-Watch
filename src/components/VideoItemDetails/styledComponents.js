@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 export const VideoItemDetailsContainer = styled.div`
   background-color: ${props => (props.themeColor ? ' #0f0f0f' : '#f4f4f4')};
@@ -8,8 +9,10 @@ export const VideoItemDetailsContainer = styled.div`
 `
 
 export const VideoItemDetailsBodyContainer = styled.div`
-  padding-top: 20px;
   background-color: ${props => (props.themeColor ? ' #181818' : '#f4f4f4')};
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 90vh;
 `
 
 export const VideoContainer = styled.div`
@@ -122,11 +125,13 @@ export const VideoLikeDislikeSaveContainer = styled.ul`
   padding-left: 0;
   display: flex;
   justify-content: space-between;
-  max-width: 55%;
+  max-width: 40%;
   align-items: center;
   margin-top: 0;
   @media (min-width: 768px) {
     margin-top: 15px;
+    min-width: 25%;
+    max-width: 40%;
   }
 `
 
@@ -134,7 +139,7 @@ export const VideoLDSItem = styled.li`
   color: #616e7c;
 `
 
-export const VideoLDSButton = styled.button`
+export const VideoLikeButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -142,6 +147,25 @@ export const VideoLDSButton = styled.button`
   border: none;
   background-color: transparent;
   color: ${props => (props.toggleColor ? '#2563eb' : '#64748b')};
+`
+export const VideoDislikeButton = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: ${props => (props.toggleColor ? '#2563eb' : '#64748b')};
+`
+
+export const VideoSaveButton = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: ${props => (props.toggleColor ? '#64748b' : '#2563eb')};
 `
 
 export const VideoLDSText = styled.p`
@@ -229,19 +253,26 @@ export const SlideBarList = styled.ul`
   list-style: none;
   font-size: 19px;
 `
-export const SlideBarItem = styled.li``
-
-export const SlideBarItemContainer = styled.div`
+export const SlideBarItem = styled.li`
   display: flex;
   align-items: center;
   color: black;
+`
+
+export const SlideBarMenuLinkItem = styled(Link)`
+  text-decoration: none;
+`
+
+export const SlideBarMenuIcon = styled.div`
+  color: ${props => (props.activeMenu ? '#ff0000' : '#475569')};
 `
 
 export const SlideBarTextContent = styled.p`
   font-weight: 500;
   margin-left: 15px;
   font-family: roboto;
-  color: ${props => (props.themeColor ? 'white' : 'black')};
+  color: ${props => (props.themeColor ? ' #f1f5f9' : '#383838')};
+  font-weight: ${props => (props.activeMenu ? 'bold' : 'normal')};
 `
 
 export const DesktopViewSliderContainer = styled.div`
@@ -250,9 +281,16 @@ export const DesktopViewSliderContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 92vh;
+    height: 90vh;
     background-color: ${props => (props.themeColor ? '#181818' : '#f1f5f9')};
   }
+`
+
+export const LoaderContainer = styled.div`
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const DesktopViewSliderFooter = styled.div`

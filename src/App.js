@@ -18,23 +18,47 @@ class App extends Component {
   state = {
     savedVideoList: [],
     darkTheme: false,
+    activeMenuId: 1,
   }
 
   toggleTheme = () => {
     this.setState(prevState => ({darkTheme: !prevState.darkTheme}))
   }
 
+  activeMenu = id => {
+    this.setState({activeMenuId: id})
+  }
+
+  addAndRemoveVideo = videoDetails => {
+    const {savedVideoList} = this.state
+    const {id} = videoDetails
+
+    console.log(id)
+
+    const isVideoSaved = savedVideoList.find(video => video.id === id)
+
+    if (isVideoSaved === undefined) {
+      this.setState(prevState => ({
+        savedVideoList: [...prevState.savedVideoList, videoDetails],
+      }))
+    } else {
+      const removedVideoList = savedVideoList.filter(video => video.id !== id)
+      this.setState({savedVideoList: removedVideoList})
+    }
+  }
+
   render() {
-    const {savedVideoList, darkTheme} = this.state
-    console.log(darkTheme)
+    const {savedVideoList, darkTheme, activeMenuId} = this.state
+
     return (
       <NxtWatchContext.Provider
         value={{
           savedVideoList,
           darkTheme,
-          addSavedVideo: this.addSavedVideo,
-          removeSavedVideo: this.removeSavedVideo,
+          activeMenuId,
+          addAndRemoveVideo: this.addAndRemoveVideo,
           toggleTheme: this.toggleTheme,
+          activeMenu: this.activeMenu,
         }}
       >
         <Switch>

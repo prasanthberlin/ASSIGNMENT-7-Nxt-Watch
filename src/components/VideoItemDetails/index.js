@@ -23,11 +23,9 @@ import {
   VideoViewCount,
   VideoPublished,
   VideoLikeDislikeSaveContainer,
-  VideoLDSItem,
   VideoLikeButton,
   VideoDislikeButton,
   VideoSaveButton,
-  VideoLDSText,
   HorizontalLine,
   ChannelHeadingDetails,
   ChannelLogo,
@@ -220,36 +218,32 @@ class VideoItemDetails extends Component {
                   </VideoPublished>
                 </VideoDetailsContent>
                 <VideoLikeDislikeSaveContainer>
-                  <VideoLDSItem>
-                    <VideoLikeButton
-                      type="button"
-                      toggleColor={likedVideo}
-                      onClick={this.likedVideo}
-                    >
-                      <BiLike size="20" />
-                      <VideoLDSText>Like</VideoLDSText>
-                    </VideoLikeButton>
-                  </VideoLDSItem>
-                  <VideoLDSItem>
-                    <VideoDislikeButton
-                      type="button"
-                      toggleColor={dislikedVideo}
-                      onClick={this.dislikedVideo}
-                    >
-                      <BiDislike size="20" />
-                      <VideoLDSText>Dislike</VideoLDSText>
-                    </VideoDislikeButton>
-                  </VideoLDSItem>
-                  <VideoLDSItem>
-                    <VideoSaveButton
-                      type="button"
-                      toggleColor={saveTextColor}
-                      onClick={addAndRemoveVideoButton}
-                    >
-                      <MdPlaylistAdd size="20" />
-                      <VideoLDSText>{saveText}</VideoLDSText>
-                    </VideoSaveButton>
-                  </VideoLDSItem>
+                  <VideoLikeButton
+                    type="button"
+                    toggleColor={likedVideo}
+                    onClick={this.likedVideo}
+                  >
+                    <BiLike size="20" />
+                    Like
+                  </VideoLikeButton>
+
+                  <VideoDislikeButton
+                    type="button"
+                    toggleColor={dislikedVideo}
+                    onClick={this.dislikedVideo}
+                  >
+                    <BiDislike size="20" />
+                    Dislike
+                  </VideoDislikeButton>
+
+                  <VideoSaveButton
+                    type="button"
+                    toggleColor={saveTextColor}
+                    onClick={addAndRemoveVideoButton}
+                  >
+                    <MdPlaylistAdd size="20" />
+                    {saveText}
+                  </VideoSaveButton>
                 </VideoLikeDislikeSaveContainer>
               </VideoDescriptionDetailsContainer>
               <HorizontalLine />

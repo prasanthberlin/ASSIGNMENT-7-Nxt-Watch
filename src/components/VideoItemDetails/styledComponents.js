@@ -120,9 +120,7 @@ export const VideoErrorViewContainer = styled.div`
     width: 75vw;
   }
 `
-export const VideoLikeDislikeSaveContainer = styled.ul`
-  list-style-type: none;
-  padding-left: 0;
+export const VideoLikeDislikeSaveContainer = styled.div`
   display: flex;
   justify-content: space-between;
   max-width: 40%;
@@ -133,10 +131,6 @@ export const VideoLikeDislikeSaveContainer = styled.ul`
     min-width: 25%;
     max-width: 40%;
   }
-`
-
-export const VideoLDSItem = styled.li`
-  color: #616e7c;
 `
 
 export const VideoLikeButton = styled.button`
@@ -168,11 +162,6 @@ export const VideoSaveButton = styled.button`
   color: ${props => (props.toggleColor ? '#64748b' : '#2563eb')};
 `
 
-export const VideoLDSText = styled.p`
-  margin-left: 4px;
-  font-family: roboto;
-  font-size: 17px;
-`
 export const HorizontalLine = styled.hr`
   opacity: 0.5;
   border: 1px #616e7c solid;

@@ -14,10 +14,6 @@ export const BannerBackgroundContainer = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: white;
-  @media (min-width: 576px) {
-    background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
-    background-size: cover;
-  }
 `
 export const BannerContentContainer = styled.div`
   max-width: 200px;

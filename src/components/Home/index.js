@@ -334,8 +334,8 @@ class Home extends Component {
             <SubHomeContentContainer>
               <HomeContainer>
                 {bannerVisible ? (
-                  <BannerBackgroundContainer>
-                    <BannerContentContainer data-testid="banner">
+                  <BannerBackgroundContainer data-testid="banner">
+                    <BannerContentContainer>
                       <BannerWebsiteLogo
                         src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
                         alt="nxt watch logo"

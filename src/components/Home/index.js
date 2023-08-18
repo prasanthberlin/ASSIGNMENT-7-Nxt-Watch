@@ -277,6 +277,7 @@ class Home extends Component {
       {value => {
         const {darkTheme, activeMenuId, activeMenu} = value
         const {bannerVisible, searchInput} = this.state
+        const {location} = this.props
 
         const sliderBarMenuItems = menu => {
           const changeActiveMenuId = () => {
@@ -284,7 +285,7 @@ class Home extends Component {
           }
 
           return (
-            <SlideBarMenuLinkItem to={menu.link}>
+            <SlideBarMenuLinkItem to={menu.link} bgColor={location.pathname === '/' ? '#e2e8f0' : 'none'}>
               <SlideBarItem key={menu.id} onClick={changeActiveMenuId}>
                 <SlideBarMenuIcon activeMenu={menu.id === activeMenuId}>
                   {menu.icon}

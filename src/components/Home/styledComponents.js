@@ -329,6 +329,7 @@ export const SlideBarItem = styled.li`
 `
 export const SlideBarMenuLinkItem = styled(Link)`
   text-decoration: none;
+  background-color: ${props => props.bgColor};
 `
 
 export const SlideBarMenuIcon = styled.div`

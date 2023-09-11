@@ -6,6 +6,7 @@ import {AiFillHome} from 'react-icons/ai'
 import {SiYoutubegaming} from 'react-icons/si'
 import {MdPlaylistAdd} from 'react-icons/md'
 import Header from '../Header'
+import SideBar from '../SideBar'
 import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
@@ -204,61 +205,11 @@ class Gaming extends Component {
   renderGamingContainer = () => (
     <NxtWatchContext.Consumer>
       {value => {
-        const {darkTheme, activeMenuId, activeMenu} = value
-
-        const sliderBarMenuItems = menu => {
-          const changeActiveMenuId = () => {
-            activeMenu(menu.id)
-          }
-
-          return (
-            <SlideBarMenuLinkItem to={menu.link}>
-              <SlideBarItem key={menu.id} onClick={changeActiveMenuId}>
-                <SlideBarMenuIcon activeMenu={menu.id === activeMenuId}>
-                  {menu.icon}
-                </SlideBarMenuIcon>
-                <SlideBarTextContent
-                  activeMenu={menu.id === activeMenuId}
-                  themeColor={darkTheme}
-                >
-                  {menu.text}
-                </SlideBarTextContent>
-              </SlideBarItem>
-            </SlideBarMenuLinkItem>
-          )
-        }
+        const {darkTheme} = value
 
         return (
           <GamingContainer data-testid="gaming" themeColor={darkTheme}>
-            <DesktopViewSliderContainer themeColor={darkTheme}>
-              <DesktopViewSliderBar>
-                <SlideBarList>
-                  {menuListItems.map(menu => sliderBarMenuItems(menu))}
-                </SlideBarList>
-              </DesktopViewSliderBar>
-              <DesktopViewSliderFooter>
-                <ContactUsHeading themeColor={darkTheme}>
-                  CONTACT US
-                </ContactUsHeading>
-                <SocialMediaLogos>
-                  <LogoImage
-                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-                    alt="facebook logo"
-                  />
-                  <LogoImage
-                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-                    alt="twitter logo"
-                  />
-                  <LogoImage
-                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-                    alt="linked in logo"
-                  />
-                  <DesktopViewFooterText themeColor={darkTheme}>
-                    Enjoy! Now to see your channels and recommendations!
-                  </DesktopViewFooterText>
-                </SocialMediaLogos>
-              </DesktopViewSliderFooter>
-            </DesktopViewSliderContainer>
+            <SideBar />
             <GamingBodyContainer>
               {this.renderGamingVideoList()}
             </GamingBodyContainer>

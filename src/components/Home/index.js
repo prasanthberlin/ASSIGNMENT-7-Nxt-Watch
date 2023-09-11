@@ -285,7 +285,10 @@ class Home extends Component {
           }
 
           return (
-            <SlideBarMenuLinkItem to={menu.link} bgColor={location.pathname === '/' ? '#e2e8f0' : 'none'}>
+            <SlideBarMenuLinkItem
+              to={menu.link}
+              bgColor={location.pathname === '/' ? '#e2e8f0' : 'none'}
+            >
               <SlideBarItem key={menu.id} onClick={changeActiveMenuId}>
                 <SlideBarMenuIcon activeMenu={menu.id === activeMenuId}>
                   {menu.icon}
